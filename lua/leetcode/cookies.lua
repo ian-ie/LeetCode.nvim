@@ -1,8 +1,6 @@
 local request = require("LeetCode.api")
-local curl = require("plenary.curl")
 local config = require("LeetCode.config")
 local path = require("plenary.path")
-local sep = path.path.sep
 local cookie_file = path:new(config.cookieFile)
 local cookie_field = { "leetcode_session", "csrf_token" }
 local dir = path:new(config.solutionDir)
