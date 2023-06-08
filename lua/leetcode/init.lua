@@ -1,25 +1,27 @@
 local M = {}
 
-M.user_config = require("LeetCode.default_config")
+M.user_config = require("leetcode.default_config")
 
 local function register()
-	local lcList = require("LeetCode.list")
-	local lcInfo = require("LeetCode.info")
-	local lcReset = require("LeetCode.reset")
-	local lcTest = require("LeetCode.test")
-	local lcSubmit = require("LeetCode.submit")
-	local checkCookies = require("LeetCode.cookies").checkCookies
+	local lcList = require("leetcode.list")
+	local lcInfo = require("leetcode.info")
+	local lcReset = require("leetcode.reset")
+	local lcTest = require("leetcode.test")
+	local lcSubmit = require("leetcode.submit")
+	local checkCookies = require("leetcode.cookies").checkCookies
 
 	local opts = {}
-	vim.api.nvim_create_user_command("lcList", lcList, opts)
-	vim.api.nvim_create_user_command("lcInfo", lcInfo, opts)
-	vim.api.nvim_create_user_command("lcReset", lcReset, opts)
-	vim.api.nvim_create_user_command("lcTest", lcTest, opts)
-	vim.api.nvim_create_user_command("lcSubmit", lcSubmit, opts)
-	vim.api.nvim_create_user_command("lcCheckCookies", checkCookies, opts)
+	-- vim.api.nvim_create_user_command("LCList", lcList, opts)
+	-- vim.api.nvim_create_user_command("LCInfo", lcInfo, opts)
+	-- vim.api.nvim_create_user_command("LCReset", lcReset, opts)
+	-- vim.api.nvim_create_user_command("LCTest", lcTest, opts)
+	-- vim.api.nvim_create_user_command("LCSubmit", lcSubmit, opts)
+	vim.api.nvim_create_user_command("LCheckCookies", checkCookies, opts)
 end
 
 M.setup = function(opts)
 	M.user_config = vim.tbl_deep_extend("force", M.user_config, opts)
 	register()
 end
+
+return M

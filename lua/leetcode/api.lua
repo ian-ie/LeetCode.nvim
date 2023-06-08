@@ -1,4 +1,4 @@
-local config = require("LeetCode.config")
+local config = require("leetcode.config")
 local curl = require("plenary.curl")
 
 local request = {}
@@ -12,8 +12,8 @@ local QUERY_GLOBAL_DATA = [[
     }
 ]]
 
-local function post(query)
-	local resp = curl.post(config.queryUrl, { headers = request.headers, body = vim.json.encode({ query = query }) })
+local function post(query, headers)
+	local resp = curl.post(config.queryUrl, { headers = request.headers or headers, body = vim.json.encode({ query = query }) })
 	return vim.json.decode(resp["body"])
 end
 
@@ -25,8 +25,8 @@ request.headers = {
 	["Referer"] = config.queryUrl,
 }
 
-function request.globalData()
-	local data = post(QUERY_GLOBAL_DATA)
+function request.globalData(headers)
+	local data = post(QUERY_GLOBAL_DATA, headers)["data"]
 	return data["userStatus"]
 end
 
