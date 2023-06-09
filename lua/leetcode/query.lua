@@ -30,5 +30,15 @@ M.PROBLEMSET_QUESTION_LIST = [[
     }
 ]]
 
-
+M.QUESTION_DATA = [[
+    query questionData($titleSlug: String!) {
+        question(titleSlug: $titleSlug) {
+            sampleTestCase
+            codeSnippets {
+                langSlug
+                code
+            }
+        }
+    }
+]]
 return M

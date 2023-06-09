@@ -94,7 +94,6 @@ end
 
 function M.list()
 	vim.api.nvim_command("LCLogin")
-    -- vim.pretty_print(request.problemsetQuestionList())
 	pickers
 		.new(opts, {
 			prompt_title = "problem",

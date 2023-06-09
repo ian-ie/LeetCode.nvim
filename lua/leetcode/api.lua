@@ -9,8 +9,8 @@ local function post(query, variables)
 		config.queryUrl,
 		{ headers = request.headers, body = vim.json.encode({ query = query, variables  = variables or {} }) }
 	)
-    vim.pretty_print(resp)
-	return vim.json.decode(resp["body"])
+    -- vim.pretty_print(resp)
+	return vim.json.decode(resp["body"])["data"]
 end
 
 request.headers = {
@@ -22,13 +22,18 @@ request.headers = {
 }
 
 function request.globalData()
-	local data = post(QUERY.GLOBAL_DATA)["data"]
+	local data = post(QUERY.GLOBAL_DATA)
 	return data ~= vim.NIL and data["userStatus"] or {}
 end
 
 function request.problemsetQuestionList(keyword)
-	local data = post(QUERY.PROBLEMSET_QUESTION_LIST, { searchKeyword = keyword or "" })["data"]["problemsetQuestionList"]
+	local data = post(QUERY.PROBLEMSET_QUESTION_LIST, { searchKeyword = keyword or "" })["problemsetQuestionList"]
 	return data ~= vim.NIL and data["questions"] or {}
+end
+
+function request.questionData(slug)
+    local data = post(QUERY.QUESTION_DATA, {titleSlug = slug})
+	return data ~= vim.NIL and data["question"] or {}
 end
 
 return request
