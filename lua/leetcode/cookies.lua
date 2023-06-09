@@ -41,8 +41,8 @@ local function checkPreconditions()
 	return success
 end
 
-local function tryLogin(headers)
-	local user_status = request.globalData(headers)
+local function tryLogin()
+	local user_status = request.globalData()
 	status = user_status["isSignedIn"]
 	username = user_status["username"]
 	if not status then
