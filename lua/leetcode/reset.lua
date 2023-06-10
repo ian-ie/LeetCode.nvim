@@ -9,7 +9,7 @@ function M.reset()
 	if utils.is_in_folder(qFile, config.solutionDir) then
 		local name = vim.fn.fnamemodify(qFile, ":t")
 		local slug = utils.get_question_slug(name)
-		local data = request.questionData(slug)
+		local data = request.codeTemplate(slug)
 		for _, _codeTemp in ipairs(data["codeSnippets"]) do
 			if _codeTemp.langSlug == utils.langSlugToFileExt[config.language] then
 				vim.api.nvim_buf_set_lines(

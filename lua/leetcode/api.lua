@@ -31,8 +31,13 @@ function request.problemsetQuestionList(keyword)
 	return data ~= vim.NIL and data["questions"] or {}
 end
 
-function request.questionData(slug)
-    local data = post(QUERY.QUESTION_DATA, {titleSlug = slug})
+function request.codeTemplate(slug)
+    local data = post(QUERY.CODE_TEMPLATE, {titleSlug = slug})
+	return data ~= vim.NIL and data["question"] or {}
+end
+
+function request.problemContent(slug)
+    local data = post(QUERY.PROBLEM_CONTENT, {titleSlug = slug})
 	return data ~= vim.NIL and data["question"] or {}
 end
 

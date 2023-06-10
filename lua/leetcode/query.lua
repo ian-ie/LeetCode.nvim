@@ -30,7 +30,7 @@ M.PROBLEMSET_QUESTION_LIST = [[
     }
 ]]
 
-M.QUESTION_DATA = [[
+M.CODE_TEMPLATE = [[
     query questionData($titleSlug: String!) {
         question(titleSlug: $titleSlug) {
             sampleTestCase
@@ -38,6 +38,17 @@ M.QUESTION_DATA = [[
                 langSlug
                 code
             }
+        }
+    }
+]]
+
+M.PROBLEM_CONTENT = [[
+    query questionData($titleSlug: String!) {
+        question(titleSlug: $titleSlug) {
+            questionId
+            questionFrontendId
+            title : translatedTitle
+            content:translatedContent
         }
     }
 ]]
