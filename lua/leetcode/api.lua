@@ -6,7 +6,7 @@ local request = {}
 
 local function post(query, variables)
 	local resp = curl.post(
-		config.queryUrl,
+		config.queryUrl .. "/graphql",
 		{ headers = request.headers, body = vim.json.encode({ query = query, variables  = variables or {} }) }
 	)
     -- vim.pretty_print(resp)
@@ -18,7 +18,6 @@ request.headers = {
 	["Content-Type"] = "application/json",
 	["Accept"] = "application/json",
 	["x-csrftoken"] = config.csrf_token,
-	["Referer"] = config.queryUrl,
 }
 
 function request.globalData()

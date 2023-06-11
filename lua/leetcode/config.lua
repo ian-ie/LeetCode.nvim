@@ -9,7 +9,7 @@ if not succ then
 	cookies = {}
 end
 
-user_config["queryUrl"] = "https://leetcode.cn/graphql"
+user_config["queryUrl"] = "https://leetcode.cn"
 local config = vim.tbl_deep_extend("force", user_config, cookies)
 
 return config
