@@ -72,9 +72,8 @@ local function gen_from_problems()
 		return make_entry.set_default_entry_mt(entry, opts)
 	end
 end
-local function select_problem(prompt_bufnr)
-	actions.close(prompt_bufnr)
-	local problem = action_state.get_selected_entry()["value"]
+
+local function touchProblemFile(problem)
 	local slug = string.format("%d.%s", problem["frontendQuestionId"], problem["slug"])
 
 	local sDir = path:new(config.solutionDir)
@@ -92,11 +91,17 @@ local function select_problem(prompt_bufnr)
 	vim.api.nvim_command("LCInfo")
 end
 
+local function select_problem(prompt_bufnr)
+	actions.close(prompt_bufnr)
+	local problem = action_state.get_selected_entry()["value"]
+    touchProblemFile(problem)
+end
+
 function M.list()
 	vim.api.nvim_command("LCLogin")
 	pickers
 		.new(opts, {
-			prompt_title = "problem",
+			prompt_title = "problems",
 			finder = finders.new_dynamic({
 				fn = filter_problems(),
 				entry_maker = gen_from_problems(),
@@ -109,6 +114,12 @@ function M.list()
 			end,
 		})
 		:find()
+end
+
+function M.today()
+    vim.api.nvim_command("LCLogin")
+    local problem = request.todayProblem()
+    touchProblemFile(problem)
 end
 
 return M

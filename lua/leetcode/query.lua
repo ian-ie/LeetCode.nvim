@@ -47,9 +47,21 @@ M.PROBLEM_CONTENT = [[
         question(titleSlug: $titleSlug) {
             questionId
             questionFrontendId
-            title : translatedTitle
-            content:translatedContent
+            title: translatedTitle
+            content: translatedContent
         }
     }
 ]]
+
+M.TODAY_PROBLEM = [[
+    query questionOfToday {
+        todayRecord {
+            question {
+                frontendQuestionId: questionFrontendId
+                slug: titleSlug
+            }
+        }
+    }
+]]
+
 return M
