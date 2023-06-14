@@ -33,7 +33,6 @@ M.PROBLEMSET_QUESTION_LIST = [[
 M.CODE_TEMPLATE = [[
     query questionData($titleSlug: String!) {
         question(titleSlug: $titleSlug) {
-            sampleTestCase
             codeSnippets {
                 langSlug
                 code
@@ -49,6 +48,7 @@ M.PROBLEM_CONTENT = [[
             questionFrontendId
             title: translatedTitle
             content: translatedContent
+            sampleTestCase
         }
     }
 ]]

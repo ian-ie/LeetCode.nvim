@@ -36,8 +36,23 @@ function M.is_in_folder(file, folder)
 	return string.sub(file, 1, string.len(folder)) == folder
 end
 
+function M.get_file_extension(filename)
+	local _, _, extension = string.find(filename, "%.([^%.]+)$")
+	return extension
+end
+
 function M.get_question_slug(file)
 	return string.gsub(string.gsub(file, "^%d+%.", ""), "%.[^.]+$", "")
+end
+
+function M.read_file_contents(path)
+	local file = io.open(path, "r")
+	if file then
+		local contents = file:read("*a")
+		file:close()
+		return contents
+	end
+	return nil
 end
 
 function M.split_string_to_table(str)

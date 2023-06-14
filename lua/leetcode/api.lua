@@ -1,6 +1,7 @@
 local QUERY = require("leetcode.query")
 local config = require("leetcode.config")
 local curl = require("plenary.curl")
+local utils = require("leetcode.utils")
 
 local request = {}
 
@@ -43,5 +44,32 @@ end
 function request.todayProblem()
 	local data = post(QUERY.TODAY_PROBLEM)
 	return data ~= vim.NIL and data["todayRecord"][1]["question"] or {}
+end
+
+local request_mode = { { "interpret_solution", "interpret_id" }, { "submit", "submission_id" } }
+
+function request.getOrderId(mode, slug, body)
+	local suffixUrl = "/problems/" .. slug .. "/" .. request_mode[mode][1] .. "/"
+	local extra_headers = {
+		["Referer"] = config.queryUrl .. "/problems/" .. slug .. "/",
+	}
+
+	local new_headers = vim.tbl_deep_extend("force", request.headers, extra_headers)
+	local resp = curl.post(config.queryUrl .. suffixUrl, { headers = new_headers, body = vim.json.encode(body) })
+	local data = vim.json.decode(resp["body"])
+	return data ~= vim.NIL and data[request_mode[mode][2]] or nil
+end
+
+function request.getStatus(id, slug)
+	local suffixUrl = "/submissions/detail/" .. id .. "/check"
+
+	local extra_headers = {
+		["Referer"] = config.queryUrl .. "/problems/" .. slug .. "/",
+	}
+
+	local new_headers = vim.tbl_deep_extend("force", request.headers, extra_headers)
+	local resp = curl.get(config.queryUrl .. suffixUrl, { headers = new_headers })
+	local data = vim.json.decode(resp["body"])
+	return data ~= vim.NIL and data or {}
 end
 return request

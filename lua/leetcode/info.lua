@@ -3,17 +3,30 @@ local config = require("leetcode.config")
 local request = require("leetcode.api")
 local M = {}
 
-local cache_slug, cache_content, cache_buf
+local cache_slug, cache_content, cache_buf, cache_id, cache_testcase
 
-local function display(content, buf)
-	buf = buf or vim.api.nvim_create_buf(true, true)
+local function display(content)
+	if not cache_buf then
+		cache_buf = vim.api.nvim_create_buf(true, true)
+		content = utils.pad(content)
+		vim.api.nvim_buf_set_lines(cache_buf, 0, -1, true, content)
+
+		vim.api.nvim_buf_set_option(cache_buf, "swapfile", false)
+		vim.api.nvim_buf_set_option(cache_buf, "modifiable", false)
+		vim.api.nvim_buf_set_option(cache_buf, "buftype", "nofile")
+		vim.api.nvim_buf_set_option(cache_buf, "buflisted", false)
+		vim.api.nvim_buf_set_keymap(cache_buf, "n", "<esc>", "<cmd>hide<CR>", { noremap = true })
+		vim.api.nvim_buf_set_keymap(cache_buf, "n", "q", "<cmd>hide<CR>", { noremap = true })
+		vim.api.nvim_buf_set_keymap(cache_buf, "v", "q", "<cmd>hide<CR>", { noremap = true })
+	end
+
 	local width = math.ceil(math.min(vim.o.columns, math.max(90, vim.o.columns - 20)))
 	local height = math.ceil(math.min(vim.o.lines, math.max(25, vim.o.lines - 10)))
 
 	local row = math.ceil(vim.o.lines - height) * 0.5 - 1
 	local col = math.ceil(vim.o.columns - width) * 0.5 - 1
 
-	vim.api.nvim_open_win(buf, true, {
+	vim.api.nvim_open_win(cache_buf, true, {
 		border = "rounded",
 		style = "minimal",
 		relative = "editor",
@@ -22,27 +35,14 @@ local function display(content, buf)
 		row = row,
 		col = col,
 	})
-
-	if not buf then
-		local c = utils.pad(content)
-		vim.api.nvim_buf_set_lines(buf, 0, -1, true, c)
-		vim.api.nvim_buf_set_option(buf, "swapfile", false)
-		vim.api.nvim_buf_set_option(buf, "modifiable", false)
-		vim.api.nvim_buf_set_option(buf, "buftype", "nofile")
-		vim.api.nvim_buf_set_option(buf, "buflisted", false)
-		vim.api.nvim_buf_set_keymap(buf, "n", "<esc>", "<cmd>hide<CR>", { noremap = true })
-		vim.api.nvim_buf_set_keymap(buf, "n", "q", "<cmd>hide<CR>", { noremap = true })
-	end
-
-	vim.api.nvim_buf_set_keymap(buf, "v", "q", "<cmd>hide<CR>", { noremap = true })
-	content = utils.pad(content, { pad_top = 1 })
-	vim.api.nvim_buf_set_option(buf, "modifiable", true)
-	vim.api.nvim_buf_set_lines(buf, 0, -1, true, content)
-	vim.api.nvim_buf_set_option(buf, "modifiable", false)
 end
 
 local function filterContent(slug)
 	local data = request.problemContent(slug)
+
+	cache_id = data["questionId"]
+	cache_testcase = data["sampleTestCase"]
+
 	local content = data["content"]
 	if content == vim.NIL then
 		return "没有会员权限"
@@ -89,9 +89,16 @@ function M.info()
 		end
 
 		cache_slug = slug
-		display(cache_content, cache_buf)
+		display(cache_content)
 	end
 end
 
+function M.get_question_id()
+	return cache_id
+end
+
+function M.get_test_case()
+	return cache_testcase
+end
 
 return M

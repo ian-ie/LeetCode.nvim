@@ -38,7 +38,7 @@ end
 
 local function gen_from_problems()
 	local displayer = entry_display.create({
-		separator  = "",
+		separator = "",
 		items = {
 			{ with = 6 },
 			{ with = 6 },
@@ -67,7 +67,7 @@ local function gen_from_problems()
 				difficulty = o.difficulty,
 				paid_only = o.paidOnly,
 			},
-			ordinal = string.format("%s\t%s\t%s\t%s", o.frontendQuestionId, o.status, o.titleCn, o.difficulty),
+			ordinal = string.format("%s %s %s %s", o.frontendQuestionId, o.status, o.titleCn, o.difficulty),
 		}
 		return make_entry.set_default_entry_mt(entry, opts)
 	end
@@ -94,7 +94,7 @@ end
 local function select_problem(prompt_bufnr)
 	actions.close(prompt_bufnr)
 	local problem = action_state.get_selected_entry()["value"]
-    touchProblemFile(problem)
+	touchProblemFile(problem)
 end
 
 function M.list()
@@ -117,9 +117,9 @@ function M.list()
 end
 
 function M.today()
-    vim.api.nvim_command("LCLogin")
-    local problem = request.todayProblem()
-    touchProblemFile(problem)
+	vim.api.nvim_command("LCLogin")
+	local problem = request.todayProblem()
+	touchProblemFile(problem)
 end
 
 return M
