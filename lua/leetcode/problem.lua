@@ -5,6 +5,12 @@ local config = require("leetcode.config")
 local utils = require("leetcode.utils")
 local M = {}
 
+local function filter_problems()
+	return function(keyword)
+		return request.problemsetQuestionList(keyword)
+	end
+end
+
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local conf = require("telescope.config").values
@@ -12,13 +18,8 @@ local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local make_entry = require("telescope.make_entry")
 local entry_display = require("telescope.pickers.entry_display")
-local opts = {}
 
-local function filter_problems()
-	return function(keyword)
-		return request.problemsetQuestionList(keyword)
-	end
-end
+local opts = {}
 
 local function update_status(sts, is_paid)
 	if sts == vim.NIL and not is_paid then
@@ -40,10 +41,10 @@ local function gen_from_problems()
 	local displayer = entry_display.create({
 		separator = "",
 		items = {
-			{ with = 6 },
-			{ with = 6 },
-			{ with = 60 },
-			{ with = 8 },
+			{ width = 6 },
+			{ width = 6 },
+			{ width = 60 },
+			{ width = 8 },
 		},
 	})
 
@@ -82,12 +83,16 @@ local function touchProblemFile(problem)
 	end
 
 	local pFile = path:new(config.solutionDir .. sep .. slug .. "." .. config.language)
+	local needReset = true
 	if not pFile:exists() then
 		pFile:touch()
+		needReset = false
 	end
 
 	utils.openFileInBuffer(pFile:absolute())
-	vim.api.nvim_command("LCReset")
+	if needReset then
+		vim.api.nvim_command("LCReset")
+	end
 	vim.api.nvim_command("LCInfo")
 end
 
@@ -101,7 +106,7 @@ function M.list()
 	vim.api.nvim_command("LCLogin")
 	pickers
 		.new(opts, {
-			prompt_title = "problems",
+			prompt_title = "PROBLEMS",
 			finder = finders.new_dynamic({
 				fn = filter_problems(),
 				entry_maker = gen_from_problems(),

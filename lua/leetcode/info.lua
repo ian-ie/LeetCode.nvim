@@ -14,10 +14,11 @@ local function display(content)
 		vim.api.nvim_buf_set_option(cache_buf, "swapfile", false)
 		vim.api.nvim_buf_set_option(cache_buf, "modifiable", false)
 		vim.api.nvim_buf_set_option(cache_buf, "buftype", "nofile")
-		vim.api.nvim_buf_set_option(cache_buf, "buflisted", false)
+		vim.api.nvim_buf_set_option(cache_buf, "buflisted", true)
 		vim.api.nvim_buf_set_keymap(cache_buf, "n", "<esc>", "<cmd>hide<CR>", { noremap = true })
 		vim.api.nvim_buf_set_keymap(cache_buf, "n", "q", "<cmd>hide<CR>", { noremap = true })
 		vim.api.nvim_buf_set_keymap(cache_buf, "v", "q", "<cmd>hide<CR>", { noremap = true })
+        -- util.set_resbuf_highlights()
 	end
 
 	local width = math.ceil(math.min(vim.o.columns, math.max(90, vim.o.columns - 20)))

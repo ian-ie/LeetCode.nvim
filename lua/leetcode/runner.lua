@@ -23,18 +23,6 @@ local function generateOrderID(mode)
 end
 
 local function displayResult(data, mode)
-	if not buf or vim.api.nvim_buf_is_valid(buf) then
-		buf = vim.api.nvim_create_buf(true, true)
-
-		vim.api.nvim_buf_set_option(buf, "buftype", "nofile")
-		vim.api.nvim_buf_set_option(buf, "buflisted", false)
-		vim.api.nvim_buf_set_option(buf, "swapfile", false)
-		vim.api.nvim_buf_set_option(buf, "modifiable", true)
-		vim.api.nvim_buf_set_keymap(buf, "n", "<esc>", "<cmd>quit<CR>", { noremap = true })
-		vim.api.nvim_buf_set_keymap(buf, "n", "q", "<cmd>quit<CR>", { noremap = true })
-		vim.api.nvim_buf_set_keymap(buf, "v", "q", "<cmd>quit<CR>", { noremap = true })
-	end
-
 	local res = {}
 	local function insert(output)
 		output = output or ""
@@ -102,7 +90,7 @@ local function displayResult(data, mode)
 				insert(std)
 			end
 		end
-		-- submit
+	-- submit
 	else
 		local succ = data["total_correct"] == data["otal_testcase"]
 
@@ -143,7 +131,19 @@ local function displayResult(data, mode)
 		end
 	end
 
-	vim.api.nvim_buf_set_lines(buf, 0, -1, true, res)
+	if not buf or vim.api.nvim_buf_is_valid(buf) then
+		buf = vim.api.nvim_create_buf(true, true)
+
+		vim.api.nvim_buf_set_lines(buf, 0, -1, true, res)
+		vim.api.nvim_buf_set_option(buf, "buftype", "nofile")
+		vim.api.nvim_buf_set_option(buf, "buflisted", false)
+		vim.api.nvim_buf_set_option(buf, "swapfile", false)
+		vim.api.nvim_buf_set_option(buf, "modifiable", false)
+		vim.api.nvim_buf_set_keymap(buf, "n", "<esc>", "<cmd>quit<CR>", { noremap = true })
+		vim.api.nvim_buf_set_keymap(buf, "n", "q", "<cmd>quit<CR>", { noremap = true })
+		vim.api.nvim_buf_set_keymap(buf, "v", "q", "<cmd>quit<CR>", { noremap = true })
+		utils.set_resbuf_highlights(buf)
+	end
 
 	local width = 60
 	local height = 10

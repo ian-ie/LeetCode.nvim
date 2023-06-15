@@ -83,4 +83,5 @@ function M.pad(contents, opts)
 	end
 	return contents
 end
+
 return M
