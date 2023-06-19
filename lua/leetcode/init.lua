@@ -6,6 +6,7 @@ local function register()
 	local lcList = require("leetcode.problem").list
 	local lcInfo = require("leetcode.info").info
 	local lcToday = require("leetcode.problem").today
+    local lcClose = require("leetcode.reset").close
 	local lcReset = require("leetcode.reset").reset
 	local lcTest = require("leetcode.runner").test
 	local lcSubmit = require("leetcode.runner").submit
@@ -19,6 +20,7 @@ local function register()
 	vim.api.nvim_create_user_command("LCTest", lcTest, opts)
 	vim.api.nvim_create_user_command("LCSubmit", lcSubmit, opts)
 	vim.api.nvim_create_user_command("LCLogin", checkCookies, opts)
+	vim.api.nvim_create_user_command("LCClose", lcClose, opts)
 end
 
 M.setup = function(opts)

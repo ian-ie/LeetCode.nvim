@@ -1,5 +1,25 @@
 local M = {}
 
+M.resultTranslate = {
+	exe = "❀ 少女祈祷中 ❀",
+	res = "⚡ 见证奇迹 ⚡",
+	pc = "通过用例",
+	acc = "通过",
+	testc = "测试用例",
+	totc = "测试用例总数",
+	out = "运行结果",
+	exp = "预期结果",
+	stdo = "stdout",
+	mem = "内存消耗",
+	rt = "执行用时",
+	r_err = "执行出错",
+	tl_err = "超出时间限制",
+	wrong_ans_err = "解答错误",
+	failed = "失败用例",
+	f_case_in = "失败用例",
+	exp_out = "预期输出",
+}
+
 M.langSlugToFileExt = {
 	["cpp"] = "cpp",
 	["java"] = "java",
@@ -82,6 +102,12 @@ function M.pad(contents, opts)
 		end
 	end
 	return contents
+end
+
+function M.read_buffer_content(bufnr)
+	local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+	local content = table.concat(lines, "\n")
+	return content
 end
 
 return M

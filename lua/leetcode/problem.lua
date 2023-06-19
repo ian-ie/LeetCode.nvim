@@ -83,10 +83,10 @@ local function touchProblemFile(problem)
 	end
 
 	local pFile = path:new(config.solutionDir .. sep .. slug .. "." .. config.language)
-	local needReset = true
+	local needReset = false
 	if not pFile:exists() then
 		pFile:touch()
-		needReset = false
+		needReset = true
 	end
 
 	utils.openFileInBuffer(pFile:absolute())

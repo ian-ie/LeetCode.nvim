@@ -3,10 +3,10 @@ local config = require("leetcode.config")
 local request = require("leetcode.api")
 local M = {}
 
-local cache_slug, cache_content, cache_buf, cache_id, cache_testcase
+local cache_slug, cache_content, cache_buf, cache_id
 
 local function display(content)
-	if not cache_buf then
+	if not cache_buf or vim.api.nvim_buf_is_valid(cache_buf) then
 		cache_buf = vim.api.nvim_create_buf(true, true)
 		content = utils.pad(content)
 		vim.api.nvim_buf_set_lines(cache_buf, 0, -1, true, content)
@@ -18,7 +18,7 @@ local function display(content)
 		vim.api.nvim_buf_set_keymap(cache_buf, "n", "<esc>", "<cmd>hide<CR>", { noremap = true })
 		vim.api.nvim_buf_set_keymap(cache_buf, "n", "q", "<cmd>hide<CR>", { noremap = true })
 		vim.api.nvim_buf_set_keymap(cache_buf, "v", "q", "<cmd>hide<CR>", { noremap = true })
-        -- util.set_resbuf_highlights()
+		-- util.set_resbuf_highlights()
 	end
 
 	local width = math.ceil(math.min(vim.o.columns, math.max(90, vim.o.columns - 20)))
@@ -42,7 +42,6 @@ local function filterContent(slug)
 	local data = request.problemContent(slug)
 
 	cache_id = data["questionId"]
-	cache_testcase = data["sampleTestCase"]
 
 	local content = data["content"]
 	if content == vim.NIL then
@@ -96,10 +95,6 @@ end
 
 function M.get_question_id()
 	return cache_id
-end
-
-function M.get_test_case()
-	return cache_testcase
 end
 
 return M
