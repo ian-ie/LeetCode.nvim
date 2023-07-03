@@ -10,7 +10,6 @@ local function post(query, variables)
 		config.queryUrl .. "/graphql",
 		{ headers = request.headers, body = vim.json.encode({ query = query, variables = variables or {} }) }
 	)
-	-- vim.pretty_print(resp)
 	return vim.json.decode(resp["body"])["data"]
 end
 

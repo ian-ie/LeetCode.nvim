@@ -125,8 +125,7 @@ local function displayResult(buf, data, mode)
 		insert()
 	end
 
-
-    vim.api.nvim_buf_set_lines(buf, 0, -1, true, res)
+	vim.api.nvim_buf_set_lines(buf, 0, -1, true, res)
 end
 
 local function checkSubmitStatus(buf, id, mode)
@@ -135,9 +134,8 @@ local function checkSubmitStatus(buf, id, mode)
 
 	if id then
 		local data = request.getStatus(id, slug)
-        vim.print(data)
 		if data["state"] == "SUCCESS" then
-            timer:stop()
+			timer:stop()
 			displayResult(buf, data, mode)
 			return
 		end

@@ -93,7 +93,7 @@ local function touchProblemFile(problem)
 	if needReset then
 		vim.api.nvim_command("LCReset")
 	end
-	vim.api.nvim_command("LCInfo")
+	vim.api.nvim_command("LCOpen")
 end
 
 local function select_problem(prompt_bufnr)

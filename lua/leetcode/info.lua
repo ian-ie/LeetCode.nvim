@@ -77,6 +77,15 @@ local function filterContent(slug)
 	return data["questionFrontendId"] .. ". " .. data["title"] .. "\n" .. content
 end
 
+function M.info_edge()
+	local qFile = vim.api.nvim_buf_get_name(0)
+	if utils.is_in_folder(qFile, config.solutionDir) then
+		local name = vim.fn.fnamemodify(qFile, ":t")
+		local slug = utils.get_question_slug(name)
+		vim.api.nvim_command(":!cmd.exe /C start msedge " .. config["queryUrl"] .. "/" .. slug)
+	end
+end
+
 function M.info()
 	vim.api.nvim_command("LCLogin")
 	local qFile = vim.api.nvim_buf_get_name(0)
