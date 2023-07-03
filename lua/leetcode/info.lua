@@ -82,7 +82,7 @@ function M.info_edge()
 	if utils.is_in_folder(qFile, config.solutionDir) then
 		local name = vim.fn.fnamemodify(qFile, ":t")
 		local slug = utils.get_question_slug(name)
-		vim.api.nvim_command(":!cmd.exe /C start msedge " .. config["queryUrl"] .. "/" .. slug)
+		vim.api.nvim_command(":!cmd.exe /C start msedge " .. config["queryUrl"] .. "/problems" .. slug.."/")
 	end
 end
 
