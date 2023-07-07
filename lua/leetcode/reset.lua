@@ -1,6 +1,6 @@
-local utils = require("leetcode.utils")
-local config = require("leetcode.config")
 local request = require("leetcode.api")
+local config = require("leetcode.config")
+local utils = require("leetcode.utils")
 local M = {}
 
 local inputBuf, resultBuf, questionID
@@ -37,7 +37,7 @@ local function splitBuffers(testcase)
 	end)
 
 	vim.api.nvim_buf_call(codeBuf, function()
-		vim.api.nvim_command("vertical resize 130")
+		vim.api.nvim_command("vertical resize 100")
 	end)
 
 	vim.api.nvim_buf_call(resultBuf, function()
